@@ -22,6 +22,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.hamcrest.Matchers.containsString;
 
 @WebMvcTest(RecipeController.class)
 class RecipeControllerTest {
@@ -154,6 +156,25 @@ class RecipeControllerTest {
             // Skeleton: Try to delete a recipe with a non-existing ID
             // Example: mockMvc.perform(delete("/api/recipes/9999"))...
             throw new UnsupportedOperationException("testDeleteNonExistingRecipe not implemented");
+        }
+
+        @Test
+        public void testCreateSoupRecipe() throws Exception {
+            String soupJson = """
+        {
+            "type": "SOUP",
+            "title": "Tomato Soup",
+            "description": "Delicious tomato soup",
+            "ingredients": "Tomatoes, Onion, Garlic",
+            "instructions": "Cook 20 min",
+            "spiceLevel": "Medium"
+        }
+        """;
+
+            mockMvc.perform(post("/api/recipes")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(soupJson))
+                    .andExpect(status().isOk());
         }
     }
 

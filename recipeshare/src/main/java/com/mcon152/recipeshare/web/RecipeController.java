@@ -1,8 +1,10 @@
 package com.mcon152.recipeshare.web;
 
 import com.mcon152.recipeshare.Recipe;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
@@ -79,7 +81,15 @@ public class RecipeController {
      */
     @PutMapping("/{id}")
     public Recipe updateRecipe(@PathVariable long id, @RequestBody Recipe updatedRecipe) {
-        throw new UnsupportedOperationException("Update recipe not implemented");
+        Recipe toReturn = null;
+        for (int i = 0; i < recipes.size(); i++) {
+            if (recipes.get(i).getId() == id) {
+                updatedRecipe.setId(id);
+                recipes.set(i,  updatedRecipe);
+                toReturn = recipes.get(i);
+            }
+        }
+        return toReturn;
     }
 
     /**
@@ -91,6 +101,16 @@ public class RecipeController {
      */
     @PatchMapping("/{id}")
     public Recipe patchRecipe(@PathVariable long id, @RequestBody Recipe partialRecipe) {
-        throw new UnsupportedOperationException("Update recipe not implemented");
+        for (int i = 0; i < recipes.size(); i++) {
+            Recipe existing = recipes.get(i);
+            if (existing.getId() == id) {
+                if (partialRecipe.getTitle() != null)
+                    existing.setTitle(partialRecipe.getTitle());
+                if (partialRecipe.getDescription() != null)
+                    existing.setDescription(partialRecipe.getDescription());
+                return existing;
+            }
+        }
+        return null;
     }
 }

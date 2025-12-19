@@ -6,11 +6,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class WelcomeController {
-    @GetMapping("/")
+    @GetMapping("/w")
     public String home() {
         return "Welcome to RecipeShare!";
     }
 
-    @GetMapping("/hello")
+    @GetMapping("/welcome")
     public String hello() { return "RecipeShare is up!"; }
 }
